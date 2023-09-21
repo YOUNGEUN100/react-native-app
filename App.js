@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Dimensions, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, Dimensions, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
+import { Fontisto } from '@expo/vector-icons';
 
 // 모바일 폰의 크기를 가져옴
 const windowWidth = Dimensions.get('window').width;
 const API_KEY = "c406a836c908fbabe51c3a9c820d2872";
+const icons = {
+  Clear: "day-sunny",
+  Clouds: "cloudy",
+}
 
 export default function App() {
   const [region, setRegion] = useState("Loading..."); // 현재 지역
@@ -33,9 +38,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.city}>
+      { ok ? (
+        <View style={styles.city}>
         <Text style={styles.cityName}>{region}</Text>
       </View>
+      ) : (
+        <View style={styles.city}>
+           <Text style={styles.noGranted}>위치 정보에 동의해주세요.</Text>
+        </View>
+      )}
       <ScrollView 
         pagingEnabled 
         horizontal 
@@ -49,15 +60,28 @@ export default function App() {
         :  (
           days.map((day, index) => 
           <View key={index} style={styles.day}>
-            <Text style={styles.temp}>{parseFloat(day.main.temp).toFixed(1)}</Text>
-            <Text style={styles.description}>{day.weather[0].main}</Text>
             <Text style={styles.time}>{day.dt_txt}</Text>
+            <View style={{
+              flexDirection: "row", 
+              alignItems: "center",
+              width: "100%",
+              }}>
+              <Text style={styles.temp}>
+                {parseFloat(day.main.temp).toFixed(1)}
+              </Text>
+              <Fontisto name={icons[day.weather[0].main]} size={50} color="white" />
+            </View>
+            <Text style={styles.description}>{day.weather[0].main}</Text>
+            <Text style={styles.detailInfo}>{day.weather[0].description}</Text>
           </View>
           )
         )}
       </ScrollView>
     </View>
   );
+
+
+
 }
 
 const styles = StyleSheet.create({
@@ -65,8 +89,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "teal",
   },
+  noGranted: {
+    fontSize: 20,
+  },
   city: {
     flex: 1,
+    marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -79,17 +107,27 @@ const styles = StyleSheet.create({
   },
   day: {
     width: windowWidth,
-    alignItems: "center",
-  },
-  temp: {
-    marginTop: 50,
-    fontSize: 100,
-  },
-  description: {
-    marginTop: -30,
-    fontSize: 50,
+    alignItems: "flex-start",
+    marginLeft: 20,
   },
   time: {
+    marginTop: 50,
+    fontSize: 15,
+    color: "rgb(236, 240, 241)",
+  },
+  temp: {
+    fontSize: 80,
+    color: "rgb(236, 240, 241)",
+    marginRight: 15,
+  },
+  description: {
+    marginTop: -15,
     fontSize: 20,
-  }
+    color: "rgb(236, 240, 241)",
+  },
+  detailInfo: {
+    fontSize: 15,
+    color: "rgb(236, 240, 241)",
+  },
+  
 })
