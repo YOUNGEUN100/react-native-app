@@ -10,11 +10,16 @@ const API_KEY = "c406a836c908fbabe51c3a9c820d2872";
 const icons = {
   Clear: "day-sunny",
   Clouds: "cloudy",
+  Atmosphere: "cloudy-gusts",
+  Snow: "snowflake",
+  Rain: "rain",
+  Drizzle: "rains",
+  Thunderstorm: "lighting",
 }
 
 export default function App() {
   const [region, setRegion] = useState("Loading..."); // 현재 지역
-  const [days, setDays] = useState([]);
+  const [days, setDays] = useState([]); // 날씨 데이터
   const [ok, setOk] = useState(true); // 위치 정보 제공 동의
 
   const getWeather = async () => {   
@@ -53,7 +58,7 @@ export default function App() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.weather}> 
         {days.length === 0 ? (
-          <View style={styles.day}>
+          <View style={styles.loading}>
             <ActivityIndicator color="white" size="large"/>
           </View>
         ) 
@@ -104,6 +109,10 @@ const styles = StyleSheet.create({
     color: "rgb(236, 240, 241)",
   },  
   weather: {
+  },
+  loading: {
+    width: windowWidth,
+    alignItems: "center",
   },
   day: {
     width: windowWidth,
