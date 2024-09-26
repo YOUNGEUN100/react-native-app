@@ -8,5 +8,6 @@
 - 날짜 데이터가 없으면 로딩이 뜸 (ActivityIndicatior 컴포넌트)
 - 날씨 데이터를 스크롤해서 확인하기 (ScrollView 컴포넌트)
 ## 화면
+3시간 간격의 날씨 정보를 보여줌
 https://github.com/YOUNGEUN100/weather-app/assets/121986519/940dfb58-d836-43bd-82e3-acb2581d9d3d
 
